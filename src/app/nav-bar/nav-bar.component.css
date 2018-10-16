@@ -1,0 +1,6 @@
+.nav-link a:hover, a:focus{
+    color:green;
+    text-decoration: none;
+    outline: none;
+  }
+  
