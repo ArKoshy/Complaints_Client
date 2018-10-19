@@ -3,7 +3,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, Component } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { HttpModule} from '@angular/http';
-import { RouterModule,Routes} from '@angular/router'
+import { RouterModule,Routes} from '@angular/router';
+import { CommonModule } from '@angular/common';  
+import { HttpClientModule } from '@angular/common/http'; 
 
 //import user defined variables
 import { AppComponent } from './app.component';
@@ -32,9 +34,12 @@ const appRoutes:Routes = [
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)  // for routing
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes) // for routing
+  
   ],
   providers: [],
   bootstrap: [AppComponent]

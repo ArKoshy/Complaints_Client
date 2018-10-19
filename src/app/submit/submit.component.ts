@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {Complaint} from '../Complaint';
+import { NgForm } from '@angular/forms';
+import {APIService} from '../api-service';
+
 
 @Component({
   selector: 'app-submit',
@@ -6,10 +10,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./submit.component.css']
 })
 export class SubmitComponent implements OnInit {
+  
+  complaint:Complaint ={
+    userName: null,
+    mobile:null,
+    email:null,
+    compType:null,
+    descr:null,
+    status:"Open ",
+    adminComment:null
+  };
 
-  constructor() { }
+  complaintTypes =['Road Repair','Building Repair','Waste Management',
+                   'Electricity','Water Works','Others']
+  
+  constructor(private  apiService:  APIService) { }
 
   ngOnInit() {
   }
 
-}
+ log(x)
+ {
+   console.log(x);
+ }
+
+
+ onSubmit(comp:Complaint):void{
+ 
+     console.log("Value of Form", comp);
+     this.apiService.sendComplaint(comp).subscribe((response) => {
+      console.log(response);
+      alert('Succesfully Inserted')
+     
+  });
+  
+  }
+
+ 
+  
+ }
+
+ 

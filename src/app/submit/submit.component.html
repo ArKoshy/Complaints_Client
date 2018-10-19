@@ -1,16 +1,84 @@
-<form>
-  <div class="form-group">
-    <label for="ContactEmail">Email </label>
-    <input type="email" class="form-control" id="ContactEmail" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">email will be not be shared publicly</small>
-  </div>
-  <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-  </div>
-  <div class="form-group form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Notify me of status change</label>
-  </div>
+<form 
+      #compForm ="ngForm" 
+      (ngSubmit)="onSubmit(complaint)"
+      novalidate>
+  <div class="wrapper">
+       {{compForm.value | json}}
+      <div class="form-group">
+          <label for="userName">Full Name</label>
+          <input required 
+                 name="userName" 
+                 [(ngModel)] ="complaint.userName"
+                 type="text" 
+                 class="form-control"
+                 #userNameControl = "ngModel" 
+                 (change)="log(userNameControl)"   
+                 minlength = "3" 
+                 maxlength="25" 
+                 placeholder="Full Name"  >
+          <div 
+                class="alert alert-danger" 
+                *ngIf="userNameControl.touched  && !userNameControl.valid">
+                <div *ngIf="userName.errors.required">
+                  Name is required
+                </div>
+                <div *ngIf="userName.errors.minlength">
+                   Name should have a min of 3 characters
+                </div>
+          </div> 
+      </div>
+      <div class="form-group">
+          <label for="mobile">Mobile</label>
+          <input name="mobile" 
+                 [(ngModel)] ="complaint.mobile"
+                 type="text" 
+                 class="form-control"
+                 placeholder="Mobile Number"  >
+      </div>    
+      <div class="form-group">
+          <label for="email">Email </label>
+          <input type="email" 
+                 class="form-control" 
+                 [(ngModel)] ="complaint.email"
+                 name="email" 
+                 aria-describedby="emailHelp" 
+                 placeholder="Enter email"  
+                 >
+          <small id="emailHelp" class="form-text text-muted">email will be not be shared publicly</small>
+      </div>
+      <div class="form-group">
+          <label for="compType">Complaint Type</label>
+          
+          <select 
+            [(ngModel)] ="complaint.compType"
+            name ="compType" 
+            class="form-control"  >
+              <option value="" selected disabled hidden>Choose here</option>
+              <option *ngFor = "let complaintTypes of complaintTypes">{{complaintTypes}}</option> 
+              <!-- <option value="Road Repair">Road Repair</option>
+              <option value="Building Repair">Building Repair</option>
+              <option value="Waste Management">Waste Management</option>
+              <option value="Electricity">Electricity</option>
+              <option value="Water Works">Water Works</option>
+              <option value="Others">Others</option> -->
+          </select>
+      </div>
+      <div class="form-group">
+          <label for="descr">Description </label>
+          <textarea required 
+                    name ="descr" 
+                    [(ngModel)] ="complaint.descr"
+                    rows="3" 
+                    class="form-control" 
+                    placeholder="Describe your complaint" >
+           </textarea>
+          <small id="compHelp" class="form-text text-muted">Provide location details</small>
+      </div>
+
   <button type="submit" class="btn btn-primary">Submit</button>
+
+</div>
 </form>
+
+<br>
+{{complaint| json}}
