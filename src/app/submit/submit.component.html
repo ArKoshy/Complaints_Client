@@ -1,7 +1,8 @@
+<div [hidden] = "submitted">
 <form 
       #compForm ="ngForm" 
       (ngSubmit)="onSubmit(complaint)"
-      novalidate>
+      >
   <div class="wrapper">
        {{compForm.value | json}}
       <div class="form-group">
@@ -19,10 +20,10 @@
           <div 
                 class="alert alert-danger" 
                 *ngIf="userNameControl.touched  && !userNameControl.valid">
-                <div *ngIf="userName.errors.required">
+                <div *ngIf="userNameControl.errors.required">
                   Name is required
                 </div>
-                <div *ngIf="userName.errors.minlength">
+                <div *ngIf="userNameControl.errors.minlength">
                    Name should have a min of 3 characters
                 </div>
           </div> 
@@ -38,6 +39,7 @@
       <div class="form-group">
           <label for="email">Email </label>
           <input type="email" 
+                 [disabled] = "stat"
                  class="form-control" 
                  [(ngModel)] ="complaint.email"
                  name="email" 
@@ -51,9 +53,10 @@
           
           <select 
             [(ngModel)] ="complaint.compType"
+            required
             name ="compType" 
             class="form-control"  >
-              <option value="" selected disabled hidden>Choose here</option>
+              <option value="" selected disabled>Choose here</option>
               <option *ngFor = "let complaintTypes of complaintTypes">{{complaintTypes}}</option> 
               <!-- <option value="Road Repair">Road Repair</option>
               <option value="Building Repair">Building Repair</option>
@@ -75,10 +78,21 @@
           <small id="compHelp" class="form-text text-muted">Provide location details</small>
       </div>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button type="submit" 
+          class="btn btn-primary"
+          [disabled]="!compForm.form.valid">Submit</button>
 
 </div>
 </form>
-
+</div>
 <br>
 {{complaint| json}}
+
+<div [hidden] = "!submitted">
+    <div class ="jumbotron">
+        <b>Complaint registered Successfully!! </b>
+        <br>
+        <p>Track your complaint with the ID:{{complaint.keyID}}</p>
+
+    </div>
+</div> 

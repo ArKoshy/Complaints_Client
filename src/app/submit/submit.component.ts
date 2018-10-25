@@ -9,17 +9,25 @@ import {APIService} from '../api-service';
   templateUrl: './submit.component.html',
   styleUrls: ['./submit.component.css']
 })
+
+
 export class SubmitComponent implements OnInit {
   
+  submitted = false; 
+  respObj1:Complaint;
+  
   complaint:Complaint ={
+    keyID: null,
     userName: null,
     mobile:null,
     email:null,
     compType:null,
     descr:null,
-    status:"Open ",
+    status:"Open",
     adminComment:null
   };
+
+  respComplaint:any;
 
   complaintTypes =['Road Repair','Building Repair','Waste Management',
                    'Electricity','Water Works','Others']
@@ -36,13 +44,15 @@ export class SubmitComponent implements OnInit {
 
 
  onSubmit(comp:Complaint):void{
- 
-     console.log("Value of Form", comp);
-     this.apiService.sendComplaint(comp).subscribe((response) => {
-      console.log(response);
-      alert('Succesfully Inserted')
-     
+      this.submitted = true;
+      this.apiService.sendComplaint(comp).subscribe((response) => {
+      this.respComplaint =response;
+      console.log("respComplaint",this.respComplaint);
+      this.complaint.keyID= this.respComplaint.docKey;
+      console.log(this.complaint.keyID);
+           
   });
+  
   
   }
 
