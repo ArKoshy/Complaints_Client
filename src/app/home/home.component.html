@@ -10,15 +10,18 @@
 <!-- <div class="wrapper"> -->
     <div class="jumbotron">
         <h1 class="display-4" style="text-align:center">Raise voice & resolve your complaints quickly </h1>
-        <p class="lead" style="text-align:center">Let us help your voice to reach where it should.File your complaints with us and we will make sure that it reached the right person</p>      
+        <p class="lead" style="text-align:center">Let us help your voice to reach where it should.File your complaints with us and we will make sure that it reaches the right person</p>      
     </div>
 
  <!-- <p-toast [style]="{marginTop: '80px'}"></p-toast>  -->
 
 
  <h3>Registered Complaints</h3>
-<p-accordion [multiple]="true">
-    <p-accordionTab *ngFor = "let item of complaints" header= "Complaint Area:{{item.compType}}">
+<p-accordion  [multiple]="true">
+    <p-accordionTab 
+        *ngFor = "let item of complaints"
+        
+        header= "Complaint Area:{{item.compType}}">
         <div>
           <span><b>Name:</b>&nbsp;&nbsp;&nbsp;</span> <span>{{item.userName}}</span>
           <br>
@@ -30,5 +33,6 @@
     
 </p-accordion>
 <!-- </div> -->
+
 </body>
 </html>

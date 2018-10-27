@@ -9,14 +9,21 @@
 
 <body>
 
+                      <!-- Update Successful Division -->
+     <div class="jumbotron"
+      [hidden]="!hideStat">
+        <p class="lead" style="text-align:center"> Record Updated Successfuly</p>
+      </div>
+                      <!-- Update Successful Div ends -->
                        <!-- Tracker ID Division -->
     
     {{trackForm.value | json}}
-    <div class="jumbotron">
+    <div class="jumbotron"
+          [hidden] ="hideStat">
         <div>
           <form
            #trackForm ="ngForm" 
-           (ngSubmit) = "onTrack(trackID)">
+            (ngSubmit) = "onTrack(trackID)">
             <div class="form-group">
               <input 
                type="text" 
@@ -35,6 +42,10 @@
              </div>
           </form>
         </div>
+        <div *ngIf = "trackStat && noDataStat">
+          <p>Complaint with this tracking ID not found.</p>
+        </div>
+       
     </div>
 
                   <!-- end of Tracker ID Division -->
@@ -69,8 +80,9 @@
                     <!-- End of Modal -->
 
                     <!-- Retrieved Form Section -->
-  <div class="wrapper" [hidden] = "!trackStat">
-  <form #trackCompForm ="ngForm"
+  <div  *ngIf = "!noDataStat" class="wrapper" [hidden] = "!trackStat||hideStat">
+  <form 
+        #trackCompForm ="ngForm"
         (ngSubmit) = "onSave(complaint)">
 
     <div class="form-group">
@@ -107,11 +119,12 @@
         
         <label for="userName">Full Name</label>
         <input required 
-               [disabled] = "nonEditStat"
+               [disabled] = "!nonEditStat"
                name="userName" 
                [(ngModel)] ="complaint.userName"
                type="text" 
                class="form-control"
+               pattern="[a-zA-Z ]*"
                #userNameControl = "ngModel" 
                (change)="log(userNameControl)"   
                minlength = "3" 
@@ -126,6 +139,9 @@
               <div *ngIf="userNameControl.errors.minlength">
                  Name should have a min of 3 characters
               </div>
+              <div *ngIf="userNameControl.errors.pattern">
+                  Name should have characters only
+               </div>
         </div> 
     </div>
     <div class="form-group">
@@ -142,13 +158,24 @@
         <input type="email" 
                [disabled] = "nonEditStat"
                class="form-control" 
+               #emailControl ="ngModel"
+               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
                [(ngModel)] ="complaint.email"
                name="email" 
                aria-describedby="emailHelp" 
                placeholder="Enter email"  
                >
         <small id="emailHelp" class="form-text text-muted">email will be not be shared publicly</small>
-    </div>
+        <div   class="alert alert-danger" 
+          *ngIf="emailControl.touched  && !emailControl.valid">
+        
+           <div *ngIf="emailControl.errors.pattern"> 
+            Email is invalid
+           </div> 
+          
+         </div> 
+   
+      </div>
     <div class="form-group">
         <label for="compType">Complaint Type</label>
         
@@ -166,6 +193,8 @@
         <label for="descr">Description </label>
         <textarea required 
                   [disabled] ="nonEditStat"
+                  #descrControl="ngModel"
+                  minlength="10"
                   name ="descr" 
                   [(ngModel)] ="complaint.descr"
                   rows="3" 
@@ -173,10 +202,22 @@
                   placeholder="Describe your complaint" >
          </textarea>
         <small id="compHelp" class="form-text text-muted">Provide location details</small>
-    </div>
+        <div   class="alert alert-danger" 
+        *ngIf="descrControl.touched  && !descrControl.valid">
+      
+            <div *ngIf="descrControl.errors.required">
+              Description is mandatory
+            </div>
+            <div *ngIf="descrControl.errors.minlength">
+               Description should have a min of 10 characters
+            </div>
+        
+       </div> 
+    
+     </div>
      </form>
  
   </div>
-
+ 
 </body>
 </html>

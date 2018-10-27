@@ -28,11 +28,16 @@ export class SubmitComponent implements OnInit {
   };
 
   respComplaint:any;
+  navigationSubscription:any;
+
 
   complaintTypes =['Road Repair','Building Repair','Waste Management',
                    'Electricity','Water Works','Others']
   
-  constructor(private  apiService:  APIService) { }
+  constructor(private  apiService:  APIService) {
+    
+
+   }
 
   ngOnInit() {
   }
@@ -42,14 +47,15 @@ export class SubmitComponent implements OnInit {
    console.log(x);
  }
 
+ 
 
  onSubmit(comp:Complaint):void{
       this.submitted = true;
       this.apiService.sendComplaint(comp).subscribe((response) => {
       this.respComplaint =response;
-      console.log("respComplaint",this.respComplaint);
+      //console.log("respComplaint",this.respComplaint);
       this.complaint.keyID= this.respComplaint.docKey;
-      console.log(this.complaint.keyID);
+      //console.log(this.complaint.keyID);
            
   });
   
